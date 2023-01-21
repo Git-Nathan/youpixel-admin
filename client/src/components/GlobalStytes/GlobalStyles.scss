@@ -1,0 +1,144 @@
+:root {
+  --black: #000;
+  --white: #fff;
+  --text-color: #f1f1f1;
+  --text-color-darker: #aaaaaa;
+  --background-color: #15141b;
+  --button-background-color: #1e232e;
+  --primary-color: #f05123;
+  --blue: #3fa6ff;
+  --hover-color: #4b4f58;
+  --separate-color: #2c2c2c;
+
+  --font-family: 'SFProDisplay', sans-serif;
+
+  // Default layout
+  --default-layout-header-height: 56px;
+
+  --watch-sidebar-width: 426px;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+button,
+input[type='submit'],
+input[type='reset'] {
+  background: none;
+  color: inherit;
+  border: none;
+  padding: 0;
+  font: inherit;
+  cursor: pointer;
+  outline: inherit;
+}
+
+input {
+  background-color: transparent;
+  border: none;
+  color: var(--text-color);
+
+  &:focus {
+    outline: none;
+  }
+}
+
+textarea {
+  background-color: transparent;
+  border: none;
+  color: var(--text-color);
+  resize: none;
+  font-family: var(--font-family);
+
+  &:focus {
+    outline: none;
+  }
+}
+
+html {
+  font-size: 62.5%;
+}
+
+// Scrollbar CSS
+html *::-webkit-scrollbar {
+  border-radius: 0;
+  width: 8px;
+}
+
+html *::-webkit-scrollbar-thumb {
+  border-radius: 4px;
+  background-color: #6b6b6b;
+}
+
+html *::-webkit-scrollbar-track {
+  border-radius: 0;
+  background-color: rgba(122, 122, 122, 0);
+}
+
+body {
+  font-family: var(--font-family);
+  font-size: 1.6rem;
+  line-height: 1.5;
+  text-rendering: optimizespeed;
+  color: var(--text-color);
+  background-color: var(--background-color);
+}
+
+@font-face {
+  font-family: SFProDisplay;
+  src: url('/assets/fonts/SF-Pro-Display-Light.otf') format('opentype');
+  font-weight: 300;
+}
+
+@font-face {
+  font-family: SFProDisplay;
+  src: url('/assets/fonts/SF-Pro-Display-Regular.otf') format('opentype');
+  font-weight: 400;
+}
+
+@font-face {
+  font-family: SFProDisplay;
+  src: url('/assets/fonts/SF-Pro-Display-Medium.otf') format('opentype');
+  font-weight: 500;
+}
+
+@font-face {
+  font-family: SFProDisplay;
+  src: url('/assets/fonts/SF-Pro-Display-Semibold.otf') format('opentype');
+  font-weight: 600;
+}
+
+@font-face {
+  font-family: SFProDisplay;
+  src: url('/assets/fonts/SF-Pro-Display-Bold.otf') format('opentype');
+  font-weight: 700;
+}
+
+.grid {
+  width: 100%;
+}
+
+.grid__row {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.grid__column {
+  padding-left: 8px;
+  padding-right: 8px;
+}
+
+.container {
+  width: 100%;
+  max-width: 100%;
+  margin-top: var(--default-layout-header-height);
+  display: flex;
+}
+
+.scrollThreshold {
+  width: 100%;
+  height: 24px;
+}

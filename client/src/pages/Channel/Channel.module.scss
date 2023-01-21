@@ -1,0 +1,47 @@
+.wrapper-title {
+  width: 90%;
+  margin: 16px auto;
+  display: flex;
+  align-items: center;
+  max-width: 1284px;
+  justify-content: space-between;
+}
+
+.title-img {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+}
+
+.channel-name {
+  font-weight: 500;
+}
+
+.title-left {
+  display: flex;
+}
+
+.separate {
+  width: 100%;
+  height: 1px;
+  background-color: var(--separate-color);
+  margin-bottom: 24px;
+}
+
+.wrapper-videos {
+  width: 90%;
+  margin: 0 auto;
+  max-width: 1284px;
+}
+
+.channel-detail {
+  margin-left: 24px;
+}
+
+.channel-sub {
+  color: var(--text-color-darker);
+}
+
+.title-right {
+  display: flex;
+}

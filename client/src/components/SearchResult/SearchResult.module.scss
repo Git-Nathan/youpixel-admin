@@ -1,0 +1,28 @@
+.search-item {
+  display: flex;
+  align-items: center;
+  padding: 6px 12px;
+  color: #0f0f0f;
+  font-size: 18px;
+  font-weight: 400;
+  text-decoration: none;
+
+  cursor: default;
+
+  &:hover {
+    background-color: #0808081a;
+  }
+
+  & svg {
+    height: 18px;
+    margin-right: 8px;
+  }
+
+  & svg ellipse {
+    stroke: #0f0f0f;
+  }
+
+  & svg path {
+    stroke: #0f0f0f;
+  }
+}

@@ -1,0 +1,51 @@
+.wrapper {
+  width: 100%;
+  aspect-ratio: 304 / 171;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: dashed 1px #606060;
+  border-radius: 10px;
+  position: -webkit-sticky;
+  position: sticky;
+  top: 24px;
+
+  &:hover {
+    border-color: var(--text-color);
+  }
+}
+
+.preview-wrapper {
+  border: none;
+}
+
+.video-player {
+  width: 100%;
+  border-radius: 4px;
+}
+.video-input {
+  display: none;
+}
+
+.input-label {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  color: var(--text-color-darker);
+
+  & path {
+    stroke: var(--text-color-darker);
+  }
+
+  &:hover {
+    color: var(--text-color);
+    cursor: pointer;
+  }
+
+  &:hover path {
+    stroke: var(--text-color);
+  }
+}

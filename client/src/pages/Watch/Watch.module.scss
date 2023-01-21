@@ -1,0 +1,127 @@
+.wrapper {
+  display: flex;
+}
+
+.primary {
+  width: calc(100% - var(--watch-sidebar-width));
+  margin: 0 0 0 24px;
+  padding: 24px 24px 0 0;
+}
+
+.secondary {
+  width: var(--watch-sidebar-width);
+  padding: 24px 24px 0 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.filter-bar {
+  width: 100%;
+  height: 56px;
+  display: flex;
+  background-color: var(--background-color);
+  margin-left: -14px;
+}
+
+.video-player {
+  width: 100%;
+  background-color: black;
+}
+
+.video-info-wrapper {
+  padding-left: 2px;
+}
+
+.video-name {
+  font-size: 22px;
+  color: var(--text-color);
+  margin-top: 4px;
+  font-weight: 600;
+  padding-left: 2px;
+}
+
+.video-options-wrapper {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+}
+
+.channel-wrapper {
+  margin: 6px 12px 0 0;
+  display: flex;
+  align-items: center;
+}
+
+.channel-text {
+  margin-left: 12px;
+}
+
+.channel-picture {
+  width: 40px;
+  height: 40px;
+  border-radius: 20px;
+  background-color: var(--button-background-color);
+}
+
+.channel-name {
+  font-size: 18px;
+  line-height: 20px;
+  color: var(--text-color);
+  text-decoration: none;
+}
+
+.channel-sub {
+  font-size: 14px;
+  color: var(--text-color-darker);
+  line-height: 16px;
+  padding-bottom: 4px;
+}
+
+.options-wrapper {
+  display: flex;
+  align-items: center;
+  padding-top: 6px;
+}
+
+.share-btn {
+  display: flex;
+  align-items: center;
+  background-color: var(--button-background-color);
+  height: 36px;
+  border-radius: 18px;
+  padding: 0 12px 0 10px;
+  margin-left: 8px;
+  width: max-content;
+
+  & svg {
+    height: 18px;
+  }
+
+  &:hover {
+    background-color: var(--hover-color);
+  }
+}
+
+.video-desc-wrapper {
+  background-color: var(--button-background-color);
+  border-radius: 10px;
+  padding: 8px 12px;
+  margin-top: 12px;
+}
+
+.video-views-and-time {
+  display: flex;
+  font-weight: 500;
+  font-size: 16px;
+}
+
+.video-desc {
+  font-weight: 300;
+  font-size: 16px;
+  line-height: 20px;
+  white-space: pre-line;
+}
+
+.delete-btn {
+  background-color: var(--button-background-color);
+}

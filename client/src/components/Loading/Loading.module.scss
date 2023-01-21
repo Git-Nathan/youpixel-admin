@@ -1,0 +1,11 @@
+.loadingPaper {
+  display: flex;
+  justify-content: center;
+  padding: 20px;
+  border-radius: 15px;
+  background-color: var(--background-color);
+}
+
+.circularProgress {
+  color: var(--primary-color);
+}

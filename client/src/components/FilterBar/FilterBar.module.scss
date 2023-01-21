@@ -1,0 +1,24 @@
+.filter-bar-box {
+  display: flex;
+  align-items: center;
+  overflow-x: hidden;
+  margin: 0 8px;
+}
+
+.filter-bar-link {
+  display: block;
+  height: 32px;
+  background-color: var(--button-background-color);
+  color: var(--text-color);
+  font-size: 14px;
+  text-decoration: none;
+  line-height: 32px;
+  padding: 0 12px;
+  border-radius: 10px;
+  margin: 0 6px;
+  white-space: nowrap;
+
+  &:hover {
+    background-color: #4b4f58;
+  }
+}

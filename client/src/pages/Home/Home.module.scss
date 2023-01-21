@@ -1,0 +1,13 @@
+.margin {
+  height: 60px;
+  width: 100%;
+}
+
+.filter-bar {
+  width: calc(100% - 240px);
+  height: 56px;
+  display: flex;
+  position: fixed;
+  background-color: var(--background-color);
+  z-index: 9;
+}

@@ -1,0 +1,32 @@
+.wrapper {
+  width: 100%;
+}
+
+.title {
+  padding: 23px 0 0 26px;
+}
+
+.nav-box {
+  padding: 12px 20px 0;
+  display: flex;
+  border-bottom: solid 1px var(--separate-color);
+  margin: 0 12px;
+}
+
+.menu-item {
+  color: var(--text-color-darker);
+  text-decoration: none;
+  margin-right: 48px;
+  padding: 0 4px;
+
+  &.active {
+    color: #3ea6ff;
+    border-bottom: solid 3px #3ea6ff;
+  }
+}
+
+.nav-link-btn {
+  width: fit-content;
+  height: 48px;
+  line-height: 48px;
+}
