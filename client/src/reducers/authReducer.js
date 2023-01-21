@@ -1,11 +1,11 @@
 import { AUTH, LOGOUT, SUBSCRIBTION } from '~/constants/actionsTypes'
 
-const authReducer = (state = { currentUser: null }, action) => {
+const authReducer = (state = {}, action) => {
   switch (action.type) {
     case AUTH:
       localStorage.setItem('profile', JSON.stringify({ ...action?.data }))
 
-      return { ...state, currentUser: action.data }
+      return { ...state }
     case SUBSCRIBTION: {
       let user = {
         ...JSON.parse(localStorage.getItem('profile')),
@@ -16,8 +16,7 @@ const authReducer = (state = { currentUser: null }, action) => {
     }
     case LOGOUT:
       localStorage.clear()
-
-      return { ...state, currentUser: null }
+      return { ...state }
     default:
       return state
   }

@@ -133,6 +133,7 @@ function Upload({ notify, setOpen, edit, title, videoEdit }) {
         desc: videoEdit?.desc,
         imgUrl: videoEdit?.imgUrl,
         videoUrl: videoEdit?.videoUrl,
+        status: videoEdit?.status,
       })
       setVideoId(videoEdit?._id)
       if (videoEdit?.imgUrl) {
@@ -149,6 +150,7 @@ function Upload({ notify, setOpen, edit, title, videoEdit }) {
     videoEdit?.title,
     videoEdit?._id,
     videoEdit?.videoUrl,
+    videoEdit?.status,
   ])
 
   useEffect(() => {
@@ -195,7 +197,11 @@ function Upload({ notify, setOpen, edit, title, videoEdit }) {
 
   const handleUpload = async (e) => {
     e.preventDefault()
-    dispatch(editVideo(videoId, { ...inputs, status: 'pending' }))
+    if (inputs.status !== 'approved') {
+      dispatch(editVideo(videoId, { ...inputs, status: 'pending' }))
+    } else {
+      dispatch(editVideo(videoId, { ...inputs }))
+    }
     notify()
     setOpen(false)
   }
@@ -209,7 +215,9 @@ function Upload({ notify, setOpen, edit, title, videoEdit }) {
             className={cn('close-icon')}
             onClick={() => {
               dispatch({ type: RELOAD })
-              navigate('/studio/videos/pending')
+              if (!edit) {
+                navigate('/studio/videos/pending')
+              }
               setOpen(false)
             }}
           >

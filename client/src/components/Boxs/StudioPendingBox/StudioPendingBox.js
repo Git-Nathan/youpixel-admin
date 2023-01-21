@@ -44,7 +44,7 @@ function StudioPendingBox({ video }) {
       </td>
       <td>
         <div className={cn('option-col-box')}>
-          <EditButton video={video} />
+          {video.status !== 'denied' && <EditButton video={video} />}
           <DeleteButton video={video} title="Bạn thực sự muốn xóa video?" />
         </div>
       </td>

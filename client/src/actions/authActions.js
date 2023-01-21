@@ -15,23 +15,25 @@ export const signin = (formData) => async (dispatch) => {
   }
 }
 
-export const sub = (id, setCurrentUser) => async (dispatch) => {
+export const sub = (id, setCurrentUser, notify) => async (dispatch) => {
   try {
     const { data } = await api.sub(id)
 
     dispatch({ type: SUBSCRIBTION, data })
     setCurrentUser(JSON.parse(localStorage.getItem('profile')))
+    notify()
   } catch (error) {
     console.log(error)
   }
 }
 
-export const unsub = (id, setCurrentUser) => async (dispatch) => {
+export const unsub = (id, setCurrentUser, notify) => async (dispatch) => {
   try {
     const { data } = await api.unsub(id)
 
     dispatch({ type: SUBSCRIBTION, data })
     setCurrentUser(JSON.parse(localStorage.getItem('profile')))
+    notify()
   } catch (error) {
     console.log(error)
   }

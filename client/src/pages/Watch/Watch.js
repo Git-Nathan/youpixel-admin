@@ -8,7 +8,7 @@ import { addView, deleteVideo, getVideo } from '~/actions/videoActions'
 import { addWatchedVideo, fetchChannel } from '~/api/api'
 import { ShareIcon } from '~/components/icons'
 import Moment from 'react-moment'
-import { signin, sub, unsub } from '~/actions/authActions'
+import { signin } from '~/actions/authActions'
 import SubcribeButton from '~/components/Button/SubcribeButton'
 import LikeButton from '~/components/Button/LikeButton'
 import Comments from '~/components/Comments'
@@ -35,27 +35,6 @@ function Watch() {
   const dispatch = useDispatch()
 
   const videoId = searchParams.get('v')
-
-  const handleSub = async () => {
-    if (currentUser?.result.subscribedUsers.includes(channel._id)) {
-      let archive = structuredClone(currentUser)
-      archive.result.subscribedUsers.splice(
-        archive.result.subscribedUsers.findIndex(
-          (item) => item === channel._id,
-        ),
-      )
-      setCurrentUser(archive)
-      setChannel({ ...channel, subscribers: channel.subscribers - 1 })
-      dispatch(unsub(channel._id, setCurrentUser))
-    } else {
-      setCurrentUser({
-        ...currentUser,
-        result: { ...currentUser.result, subscribedUsers: channel._id },
-      })
-      setChannel({ ...channel, subscribers: channel.subscribers + 1 })
-      dispatch(sub(channel._id, setCurrentUser))
-    }
-  }
 
   const handleLogin = useGoogleLogin({
     onSuccess: async (respose) => {
@@ -200,8 +179,8 @@ function Watch() {
               <SubcribeButton
                 currentUser={currentUser}
                 channel={channel}
-                handleSub={handleSub}
-                handleLogin={handleLogin}
+                setCurrentUser={setCurrentUser}
+                setChannel={setChannel}
               />
             </div>
             <div className={cn('options-wrapper')}>

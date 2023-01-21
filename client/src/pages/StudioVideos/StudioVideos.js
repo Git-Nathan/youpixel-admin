@@ -30,11 +30,12 @@ function StudioVideos() {
 
   useEffect(() => {
     const getdata = async () => {
-      const { data } = await getUserVideos(currentUser?.result._id)
+      const { data } = await getUserVideos(currentUser?.result._id, 1)
       if (data.total <= 20) {
         setHasMore(false)
       }
       setVideos(data.data)
+      console.log(data.data)
       setNumberOfPages(data.numberOfPages)
       setPage(2)
       setLoading(false)

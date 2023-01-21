@@ -78,3 +78,21 @@
     background-color: #4b4f58;
   }
 }
+
+.guide-signin {
+  padding: 0 12px;
+  color: var(--text-color-darker);
+}
+
+.signin-btn {
+  margin: 6px 0 0 12px;
+}
+
+.author-img {
+  height: 24px;
+  width: 24px;
+  border-radius: 18px;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}

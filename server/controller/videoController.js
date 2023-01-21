@@ -36,6 +36,40 @@ export const fetchVideos = async (req, res) => {
     const videos = await Video.aggregate([
       { $match: { status: 'approved' } },
       { $sample: { size: 500 } },
+      {
+        $project: {
+          status: 0,
+          videoPath: 0,
+          videoUrl: 0,
+          likes: 0,
+          __v: 0,
+          dislikes: 0,
+        },
+      },
+      { $addFields: { userObjectId: { $toObjectId: '$userId' } } },
+      {
+        $lookup: {
+          from: 'users',
+          localField: 'userObjectId',
+          foreignField: '_id',
+          as: 'userInfo',
+        },
+      },
+      {
+        $unwind: '$userInfo',
+      },
+      {
+        $project: {
+          'userInfo.createdAt': 0,
+          'userInfo.email': 0,
+          'userInfo.likedVideos': 0,
+          'userInfo.subscribedUsers': 0,
+          'userInfo.updatedAt': 0,
+          'userInfo.watchedVideos': 0,
+          'userInfo.__v': 0,
+          'userInfo.subscribers': 0,
+        },
+      },
     ])
 
     res.status(200).json({ data: videos })
@@ -70,9 +104,56 @@ export const addView = async (req, res) => {
 }
 
 export const getTopView = async (req, res) => {
+  const { page } = req.query
+
   try {
-    const videos = await Video.find({ status: 'approved' }).sort({ views: -1 })
-    res.status(200).json({ videos })
+    const startIndex = (Number(page) - 1) * 20
+    const total = await Video.find({ status: 'approved' }).countDocuments({})
+
+    const videos = await Video.aggregate([
+      { $match: { status: 'approved' } },
+      {
+        $project: {
+          status: 0,
+          videoPath: 0,
+          videoUrl: 0,
+          likes: 0,
+          __v: 0,
+          dislikes: 0,
+        },
+      },
+      { $addFields: { userObjectId: { $toObjectId: '$userId' } } },
+      {
+        $lookup: {
+          from: 'users',
+          localField: 'userObjectId',
+          foreignField: '_id',
+          as: 'userInfo',
+        },
+      },
+      {
+        $unwind: '$userInfo',
+      },
+      {
+        $project: {
+          'userInfo.createdAt': 0,
+          'userInfo.email': 0,
+          'userInfo.likedVideos': 0,
+          'userInfo.subscribedUsers': 0,
+          'userInfo.updatedAt': 0,
+          'userInfo.watchedVideos': 0,
+          'userInfo.__v': 0,
+          'userInfo.subscribers': 0,
+        },
+      },
+      { $sort: { views: -1 } },
+      { $skip: startIndex },
+      { $limit: 20 },
+    ])
+
+    res
+      .status(200)
+      .json({ data: videos, numberOfPages: Math.ceil(total / 20), total })
   } catch (error) {
     res.status(404).json({ message: error.message })
   }
@@ -89,10 +170,66 @@ export const getUserVideos = async (req, res) => {
       status: 'approved',
     }).countDocuments({})
 
-    const videos = await Video.find({ userId: id, status: 'approved' })
-      .sort({ createdAt: -1 })
-      .skip(startIndex)
-      .limit(20)
+    const videos = await Video.aggregate([
+      { $match: { userId: id, status: 'approved' } },
+      {
+        $project: {
+          __v: 0,
+        },
+      },
+      { $addFields: { userObjectId: { $toObjectId: '$userId' } } },
+      {
+        $lookup: {
+          from: 'users',
+          localField: 'userObjectId',
+          foreignField: '_id',
+          as: 'userInfo',
+        },
+      },
+      {
+        $unwind: '$userInfo',
+      },
+      {
+        $project: {
+          'userInfo.createdAt': 0,
+          'userInfo.email': 0,
+          'userInfo.likedVideos': 0,
+          'userInfo.subscribedUsers': 0,
+          'userInfo.updatedAt': 0,
+          'userInfo.watchedVideos': 0,
+          'userInfo.__v': 0,
+          'userInfo.subscribers': 0,
+        },
+      },
+      { $addFields: { videoStringId: { $toString: '$_id' } } },
+      {
+        $lookup: {
+          from: 'comments',
+          localField: 'videoStringId',
+          foreignField: 'videoId',
+          as: 'comments',
+        },
+      },
+      {
+        $addFields: {
+          numOfComment: {
+            $cond: {
+              if: { $isArray: '$comments' },
+              then: { $size: '$comments' },
+              else: 0,
+            },
+          },
+        },
+      },
+      {
+        $project: {
+          comments: 0,
+        },
+      },
+      { $sort: { createdAt: -1 } },
+      { $skip: startIndex },
+      { $limit: 20 },
+    ])
 
     res
       .status(200)
@@ -230,13 +367,51 @@ export const getVideosBySearch = async (req, res, next) => {
       status: 'approved',
     }).countDocuments({})
 
-    const result = await Video.find({
-      title: { $regex: search_query, $options: 'i' },
-      status: 'approved',
-    })
-      .sort({ views: -1 })
-      .skip(startIndex)
-      .limit(20)
+    const result = await Video.aggregate([
+      {
+        $match: {
+          title: { $regex: search_query, $options: 'i' },
+          status: 'approved',
+        },
+      },
+      {
+        $project: {
+          status: 0,
+          videoPath: 0,
+          videoUrl: 0,
+          likes: 0,
+          __v: 0,
+          dislikes: 0,
+        },
+      },
+      { $addFields: { userObjectId: { $toObjectId: '$userId' } } },
+      {
+        $lookup: {
+          from: 'users',
+          localField: 'userObjectId',
+          foreignField: '_id',
+          as: 'userInfo',
+        },
+      },
+      {
+        $unwind: '$userInfo',
+      },
+      {
+        $project: {
+          'userInfo.createdAt': 0,
+          'userInfo.email': 0,
+          'userInfo.likedVideos': 0,
+          'userInfo.subscribedUsers': 0,
+          'userInfo.updatedAt': 0,
+          'userInfo.watchedVideos': 0,
+          'userInfo.__v': 0,
+          'userInfo.subscribers': 0,
+        },
+      },
+      { $sort: { views: -1 } },
+      { $skip: startIndex },
+      { $limit: 20 },
+    ])
 
     res
       .status(200)

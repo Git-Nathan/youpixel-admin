@@ -12,7 +12,40 @@ export const googleAuth = async (req, res, next) => {
           { id: user._id, role: user.role },
           process.env.JWT,
         )
-        res.status(200).json({ result: user, token })
+
+        const subscribedUsers = await User.aggregate([
+          { $match: { email: req.body.email } },
+          {
+            $unwind: '$subscribedUsers',
+          },
+          { $addFields: { userObjectId: { $toObjectId: '$subscribedUsers' } } },
+          {
+            $lookup: {
+              from: 'users',
+              localField: 'userObjectId',
+              foreignField: '_id',
+              as: 'userInfo',
+            },
+          },
+          { $sort: { createdAt: -1 } },
+          {
+            $project: {
+              userInfo: 1,
+            },
+          },
+          {
+            $unwind: '$userInfo',
+          },
+          { $replaceRoot: { newRoot: '$userInfo' } },
+          {
+            $project: {
+              name: 1,
+              picture: 1,
+            },
+          },
+        ])
+
+        res.status(200).json({ result: user, subscribedUsers, token })
       } else {
         res.status(200).json({ message: user.role })
       }
@@ -269,8 +302,42 @@ export const getLiked = async (req, res, next) => {
         $unwind: '$liked',
       },
       { $replaceRoot: { newRoot: '$liked' } },
+      {
+        $project: {
+          status: 0,
+          videoPath: 0,
+          videoUrl: 0,
+          likes: 0,
+          __v: 0,
+          dislikes: 0,
+        },
+      },
       { $skip: startIndex },
       { $limit: 20 },
+      { $addFields: { userObjectId: { $toObjectId: '$userId' } } },
+      {
+        $lookup: {
+          from: 'users',
+          localField: 'userObjectId',
+          foreignField: '_id',
+          as: 'userInfo',
+        },
+      },
+      {
+        $unwind: '$userInfo',
+      },
+      {
+        $project: {
+          'userInfo.createdAt': 0,
+          'userInfo.email': 0,
+          'userInfo.likedVideos': 0,
+          'userInfo.subscribedUsers': 0,
+          'userInfo.updatedAt': 0,
+          'userInfo.watchedVideos': 0,
+          'userInfo.__v': 0,
+          'userInfo.subscribers': 0,
+        },
+      },
     ])
 
     res.status(200).json({
@@ -342,16 +409,48 @@ export const getWatched = async (req, res, next) => {
         $unwind: '$watched',
       },
       { $replaceRoot: { newRoot: '$watched' } },
+      {
+        $project: {
+          status: 0,
+          videoPath: 0,
+          videoUrl: 0,
+          likes: 0,
+          __v: 0,
+          dislikes: 0,
+        },
+      },
       { $skip: startIndex },
       { $limit: 20 },
+      { $addFields: { userObjectId: { $toObjectId: '$userId' } } },
+      {
+        $lookup: {
+          from: 'users',
+          localField: 'userObjectId',
+          foreignField: '_id',
+          as: 'userInfo',
+        },
+      },
+      {
+        $unwind: '$userInfo',
+      },
+      {
+        $project: {
+          'userInfo.createdAt': 0,
+          'userInfo.email': 0,
+          'userInfo.likedVideos': 0,
+          'userInfo.subscribedUsers': 0,
+          'userInfo.updatedAt': 0,
+          'userInfo.watchedVideos': 0,
+          'userInfo.__v': 0,
+          'userInfo.subscribers': 0,
+        },
+      },
     ])
-    res
-      .status(200)
-      .json({
-        data: watchedVideos,
-        numberOfPages: Math.ceil(total[0].count / 20),
-        total: total[0].count,
-      })
+    res.status(200).json({
+      data: watchedVideos,
+      numberOfPages: Math.ceil(total[0].count / 20),
+      total: total[0].count,
+    })
   } catch (err) {
     next(err)
   }

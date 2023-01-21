@@ -1,15 +1,11 @@
 import classNames from 'classnames/bind'
-import { useEffect, useState } from 'react'
 import Moment from 'react-moment'
 import { Link } from 'react-router-dom'
-import { fetchChannel } from '~/api/api'
 import styles from './SearchVideoBox.module.scss'
 
 const cn = classNames.bind(styles)
 
 function SearchVideoBox({ video }) {
-  const [channel, setChannel] = useState({})
-
   let videoDuration
 
   if (video.duration < 3600) {
@@ -17,14 +13,6 @@ function SearchVideoBox({ video }) {
   } else {
     videoDuration = new Date(video.duration * 1000).toISOString().slice(11, 19)
   }
-
-  useEffect(() => {
-    const getChannel = async () => {
-      const { data } = await fetchChannel(video.userId)
-      setChannel(data[0])
-    }
-    getChannel()
-  }, [video.userId])
 
   return (
     <div className={cn('wrapper')}>
@@ -47,22 +35,13 @@ function SearchVideoBox({ video }) {
             </span>
           </div>
         </Link>
-        <Link to={`/channel/${channel._id}`} className={cn('author')}>
-          {channel?.picture ? (
-            <>
-              <img
-                className={cn('author-img')}
-                src={channel.picture}
-                alt="author"
-              />
-              <div className={cn('author-name')}>{channel.name}</div>
-            </>
-          ) : (
-            <>
-              <div className={cn('author-img')}></div>
-              <div className={cn('author-name-load')}></div>
-            </>
-          )}
+        <Link to={`/channel/${video.userInfo._id}`} className={cn('author')}>
+          <img
+            className={cn('author-img')}
+            src={video.userInfo.picture}
+            alt="author"
+          />
+          <div className={cn('author-name')}>{video.userInfo.name}</div>
         </Link>
         <div className={cn('video-desc')}>{video.desc}</div>
       </div>

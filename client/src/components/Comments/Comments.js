@@ -95,11 +95,12 @@ function Comments({ videoId, currentUser, handleLogin }) {
 
   useEffect(() => {
     const Comments = async () => {
-      const { data } = await getComments(videoId)
+      const { data } = await getComments(videoId, 1)
       if (data.data.length < 20) {
         setHasMore(false)
       }
       setComments(data.data)
+      console.log(data.data)
       setNumOfComments(data.total)
       setNumberOfPages(data.numberOfPages)
       setPage(2)

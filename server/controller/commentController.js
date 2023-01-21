@@ -23,12 +23,41 @@ export const getComments = async (req, res, next) => {
     const startIndex = (Number(page) - 1) * 20
     const total = await Comment.find({ videoId }).countDocuments({})
 
-    const comments = await Comment.find({
-      videoId,
-    })
-      .sort({ createdAt: -1 })
-      .skip(startIndex)
-      .limit(20)
+    const comments = await Comment.aggregate([
+      { $match: { videoId: videoId } },
+      {
+        $project: {
+          __v: 0,
+        },
+      },
+      { $addFields: { userObjectId: { $toObjectId: '$userId' } } },
+      {
+        $lookup: {
+          from: 'users',
+          localField: 'userObjectId',
+          foreignField: '_id',
+          as: 'userInfo',
+        },
+      },
+      {
+        $unwind: '$userInfo',
+      },
+      {
+        $project: {
+          'userInfo.createdAt': 0,
+          'userInfo.email': 0,
+          'userInfo.likedVideos': 0,
+          'userInfo.subscribedUsers': 0,
+          'userInfo.updatedAt': 0,
+          'userInfo.watchedVideos': 0,
+          'userInfo.__v': 0,
+          'userInfo.subscribers': 0,
+        },
+      },
+      { $sort: { createdAt: -1 } },
+      { $skip: startIndex },
+      { $limit: 20 },
+    ])
 
     res
       .status(200)

@@ -1,7 +1,7 @@
 import styles from './TopViews.module.scss'
 import classNames from 'classnames/bind'
 import SearchVideoBox from '~/components/Boxs/SearchVideoBox'
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import { getTopView } from '~/api/api'
 import Loading from '~/components/Loading'
 
@@ -9,19 +9,60 @@ const cn = classNames.bind(styles)
 
 function TopViews() {
   const [videos, setVideos] = useState([])
-  const [loading, setLoading] = useState(true)
+  const [isPageLoading, setIsPageLoading] = useState(true)
+  const [page, setPage] = useState(1)
+  const [hasMore, setHasMore] = useState(true)
+  const [numberOfPages, setNumberOfPages] = useState(0)
+  const [isLoading, setIsLoading] = useState(true)
+
+  const getMoreVideos = useCallback(async () => {
+    if (page >= numberOfPages) {
+      setHasMore(false)
+    }
+    const { data } = await getTopView(page)
+    setVideos((prev) => prev.concat(data.data))
+    setPage((prev) => ++prev)
+    setNumberOfPages(data.numberOfPages)
+    setIsLoading(false)
+  }, [numberOfPages, page])
+
+  const intObserver = useRef()
+
+  const scrollThreshold = useCallback(
+    (threshold) => {
+      if (isLoading) return
+
+      if (intObserver.current) intObserver.current.disconnect()
+
+      intObserver.current = new IntersectionObserver((items) => {
+        if (items[0].isIntersecting && hasMore) {
+          setIsLoading(true)
+          getMoreVideos()
+        }
+      })
+
+      if (threshold) intObserver.current.observe(threshold)
+    },
+    [getMoreVideos, hasMore, isLoading],
+  )
 
   useEffect(() => {
     window.scrollTo({ top: 0, left: 0, behavior: 'auto' })
     const getdata = async () => {
-      const { data } = await getTopView()
-      setVideos(data.videos)
-      setLoading(false)
+      const { data } = await getTopView(1)
+      if (data.data.total <= 20) {
+        setHasMore(false)
+      }
+      setVideos(data.data)
+      setNumberOfPages(data.numberOfPages)
+      setPage(2)
+      setIsPageLoading(false)
+      setIsLoading(false)
     }
     getdata()
   }, [])
 
-  if (loading) {
+  if (isPageLoading) {
     return <Loading />
   }
 
@@ -44,6 +85,8 @@ function TopViews() {
           <SearchVideoBox key={video._id} video={video} />
         ))}
       </div>
+      {isLoading && <Loading mgt="0px" size="3em" />}
+      <div className={cn('scrollThreshold')} ref={scrollThreshold}></div>
     </>
   )
 }
