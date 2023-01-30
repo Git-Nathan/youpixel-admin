@@ -460,19 +460,14 @@ export const getWatched = async (req, res, next) => {
 export const block = async (req, res, next) => {
   const userId = req.params.userId
   const message = req.body.blockMessage
-  const role = req.role
 
   try {
-    if (role === 'admin') {
-      if (message === '') {
-        await User.findByIdAndUpdate(userId, { role: 'blocked' })
-        res.status(200).json({ message: 'Blocked' })
-      } else {
-        await User.findByIdAndUpdate(userId, { role: message })
-        res.status(200).json({ message: 'Blocked' })
-      }
+    if (message === '') {
+      await User.findByIdAndUpdate(userId, { role: 'blocked' })
+      res.status(200).json({ message: 'Blocked' })
     } else {
-      return next(createError(403, 'You not an admin!'))
+      await User.findByIdAndUpdate(userId, { role: message })
+      res.status(200).json({ message: 'Blocked' })
     }
   } catch (error) {
     next(err)
@@ -481,15 +476,10 @@ export const block = async (req, res, next) => {
 
 export const unBlock = async (req, res, next) => {
   const userId = req.params.userId
-  const role = req.role
 
   try {
-    if (role === 'admin') {
-      await User.findByIdAndUpdate(userId, { role: 'user' })
-      res.status(200).json({ message: 'Unblock successfully' })
-    } else {
-      return next(createError(403, 'You not an admin!'))
-    }
+    await User.findByIdAndUpdate(userId, { role: 'user' })
+    res.status(200).json({ message: 'Unblock successfully' })
   } catch (error) {
     next(err)
   }
