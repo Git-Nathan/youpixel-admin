@@ -6,7 +6,7 @@ import ConfirmOverlay from '~/components/ConfirmOverlay'
 import { RELOAD } from '~/constants/actionsTypes'
 import Button from '../Button'
 
-function BlockButton({ channel, currentUser }) {
+function BlockButton({ channel }) {
   const [open, setOpen] = useState(false)
   const [open2, setOpen2] = useState(false)
   const [blockMessage, setBlockMessage] = useState('')
@@ -60,7 +60,7 @@ function BlockButton({ channel, currentUser }) {
         }}
       />
     )
-  } else if (channel?.role && channel.role !== 'admin') {
+  } else if (channel?.role) {
     button = (
       <Button
         children="Bỏ chặn người dùng"
@@ -73,30 +73,28 @@ function BlockButton({ channel, currentUser }) {
     )
   }
 
-  if (currentUser?.result.role === 'admin') {
-    return (
-      <>
-        {button}
-        {open && (
-          <ConfirmOverlay
-            title={`Bạn có chắc muốn chặn ${channel.name}?`}
-            setOpen={setOpen}
-            confirmText="Chặn"
-            setMessage={setBlockMessage}
-            onConfirm={handleBlock}
-          />
-        )}
-        {open2 && (
-          <ConfirmOverlay
-            title={`Bạn có chắc muốn bỏ chặn ${channel.name}?`}
-            setOpen={setOpen2}
-            confirmText="Bỏ chặn"
-            onConfirm={handleUnBlock}
-          />
-        )}
-      </>
-    )
-  }
+  return (
+    <>
+      {button}
+      {open && (
+        <ConfirmOverlay
+          title={`Bạn có chắc muốn chặn ${channel.name}?`}
+          setOpen={setOpen}
+          confirmText="Chặn"
+          setMessage={setBlockMessage}
+          onConfirm={handleBlock}
+        />
+      )}
+      {open2 && (
+        <ConfirmOverlay
+          title={`Bạn có chắc muốn bỏ chặn ${channel.name}?`}
+          setOpen={setOpen2}
+          confirmText="Bỏ chặn"
+          onConfirm={handleUnBlock}
+        />
+      )}
+    </>
+  )
 }
 
 export default BlockButton

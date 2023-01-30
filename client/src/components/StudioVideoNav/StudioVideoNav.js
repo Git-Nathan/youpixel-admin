@@ -5,8 +5,6 @@ import { NavLink } from 'react-router-dom'
 const cn = classNames.bind(styles)
 
 function StudioVideoNav() {
-  const currentUser = JSON.parse(localStorage.getItem('profile'))
-
   return (
     <div className={cn('wrapper')}>
       <h2 className={cn('title')} style={{ marginLeft: '8px' }}>
@@ -14,37 +12,19 @@ function StudioVideoNav() {
       </h2>
       <div className={cn('nav-box')}>
         <NavLink
-          to={'/studio/videos/upload'}
+          to={'/admin/approval'}
           className={(nav) => cn('menu-item', { active: nav.isActive })}
           end
         >
-          <div className={cn('nav-link-btn')}>Video của bạn</div>
+          <div className={cn('nav-link-btn')}>Duyệt video</div>
         </NavLink>
         <NavLink
-          to={'/studio/videos/pending'}
+          to={'/admin/reported'}
           className={(nav) => cn('menu-item', { active: nav.isActive })}
           end
         >
-          <div className={cn('nav-link-btn')}>Video chờ duyệt</div>
+          <div className={cn('nav-link-btn')}>Bình luận vi phạm</div>
         </NavLink>
-        {currentUser.result.role === 'admin' && (
-          <>
-            <NavLink
-              to={'/studio/videos/approval'}
-              className={(nav) => cn('menu-item', { active: nav.isActive })}
-              end
-            >
-              <div className={cn('nav-link-btn')}>Duyệt video</div>
-            </NavLink>
-            <NavLink
-              to={'/studio/videos/reported'}
-              className={(nav) => cn('menu-item', { active: nav.isActive })}
-              end
-            >
-              <div className={cn('nav-link-btn')}>Bình luận vi phạm</div>
-            </NavLink>
-          </>
-        )}
       </div>
     </div>
   )

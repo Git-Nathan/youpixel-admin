@@ -9,7 +9,6 @@ const cn = classNames.bind(styles)
 
 function ApprovalVideoBox({ video }) {
   const [button, setButton] = useState(0)
-  const currentUser = JSON.parse(localStorage.getItem('profile'))
   const [channel, setChannel] = useState({})
 
   let videoDuration
@@ -31,11 +30,11 @@ function ApprovalVideoBox({ video }) {
   }, [video?.userId])
 
   const handleApprove = async (videoId) => {
-    await approveVideo(videoId, currentUser.result)
+    await approveVideo(videoId)
   }
 
   const handleDeny = async (videoId) => {
-    await denyVideo(videoId, currentUser.result)
+    await denyVideo(videoId)
   }
 
   return (

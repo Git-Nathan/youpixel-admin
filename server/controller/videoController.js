@@ -293,14 +293,10 @@ export const approveVideo = async (req, res) => {
   const { videoId } = req.params
 
   try {
-    if (req.body.role === 'admin') {
-      await Video.findByIdAndUpdate(videoId, {
-        status: 'approved',
-      })
-      res.status(200).json({ message: 'Approved' })
-    } else {
-      return next(createError(403, 'You not an admin!'))
-    }
+    await Video.findByIdAndUpdate(videoId, {
+      status: 'approved',
+    })
+    res.status(200).json({ message: 'Approved' })
   } catch (error) {
     res.status(404).json({ message: error.message })
   }
@@ -310,14 +306,10 @@ export const denyVideo = async (req, res) => {
   const { videoId } = req.params
 
   try {
-    if (req.body.role === 'admin') {
-      await Video.findByIdAndUpdate(videoId, {
-        status: 'denied',
-      })
-      res.status(200).json({ message: 'denied' })
-    } else {
-      return next(createError(403, 'You not an admin!'))
-    }
+    await Video.findByIdAndUpdate(videoId, {
+      status: 'denied',
+    })
+    res.status(200).json({ message: 'denied' })
   } catch (error) {
     res.status(404).json({ message: error.message })
   }

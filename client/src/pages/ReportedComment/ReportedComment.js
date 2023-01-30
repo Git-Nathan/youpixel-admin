@@ -14,6 +14,7 @@ function ReportedComment() {
   useEffect(() => {
     const getdata = async () => {
       const { data } = await getReportedComment()
+      console.log(data)
       setReportedComment(data)
       setLoading(false)
     }

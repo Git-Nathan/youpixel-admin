@@ -14,15 +14,12 @@ import {
   getVideo,
   getVideosBySearch,
 } from '../controller/videoController.js'
-import auth from '../middleware/auth.js'
 const router = express.Router()
 
-router.post('/approval/approve/:videoId', auth, approveVideo)
-router.post('/approval/deny/:videoId', auth, denyVideo)
-router.post('/edit/:videoId', auth, editVideo)
-router.post('/add', auth, addVideo)
+router.post('/approval/approve/:videoId', approveVideo)
+router.post('/approval/deny/:videoId', denyVideo)
 
-router.delete('/delete/:videoId', auth, deleteVideo)
+router.delete('/delete/:videoId', deleteVideo)
 
 router.patch('/addview/:id', addView)
 

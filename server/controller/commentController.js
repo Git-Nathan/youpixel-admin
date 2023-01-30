@@ -78,17 +78,10 @@ export const getReportedComments = async (req, res, next) => {
 
 export const deleteComment = async (req, res, next) => {
   const { commentId } = req.params
-  const userId = req.userId
-  const userRole = req.role
 
   try {
-    const comment = await Comment.findById(commentId)
-    if (userRole === 'admin' || userId === comment.userId) {
-      await Comment.findByIdAndDelete(commentId)
-      res.status(200).json({ message: 'delete successfully' })
-    } else {
-      return next(createError(403, 'You can only delete your comment!'))
-    }
+    await Comment.findByIdAndDelete(commentId)
+    res.status(200).json({ message: 'delete successfully' })
   } catch (err) {
     next(err)
   }

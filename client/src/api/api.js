@@ -34,10 +34,10 @@ export const getLiked = (page) => API.get(`/users/getLiked?page=${page}`)
 export const addVideo = (data) => API.post('videos/add', data)
 export const editVideo = (videoId, data) =>
   API.post(`/videos/edit/${videoId}`, data)
-export const approveVideo = (videoId, data) =>
-  API.post(`/videos/approval/approve/${videoId}`, data)
-export const denyVideo = (videoId, data) =>
-  API.post(`/videos/approval/deny/${videoId}`, data)
+export const approveVideo = (videoId) =>
+  API.post(`/videos/approval/approve/${videoId}`)
+export const denyVideo = (videoId) =>
+  API.post(`/videos/approval/deny/${videoId}`)
 
 export const deleteVideo = (videoId) => API.delete(`/videos/delete/${videoId}`)
 
