@@ -11,7 +11,7 @@ import SidebarOnly from '~/layouts/SidebarOnly'
 export const publicRoutes = [
   { path: '/admin', conponemt: Approval },
   { path: '/watch', conponemt: Watch, layout: HeaderOnly },
-  { path: '/channel/:id', conponemt: Channel },
+  { path: '/channel/:id', conponemt: Channel, layout: SidebarOnly },
   { path: '/results', conponemt: Results, layout: SidebarOnly },
 ]
 

@@ -83,6 +83,7 @@ export const getUser = async (req, res) => {
               else: 0,
             },
           },
+          role: 1,
         },
       },
     ])

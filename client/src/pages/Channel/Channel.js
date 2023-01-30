@@ -1,17 +1,12 @@
 import classNames from 'classnames/bind'
 import { useCallback, useEffect, useRef, useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import { useSelector } from 'react-redux'
 import { useParams } from 'react-router-dom'
-import { signin } from '~/actions/authActions'
 import { fetchChannel, getUserVideos } from '~/api/api'
-import SubcribeButton from '~/components/Button/SubcribeButton'
 import VideoBox from '~/components/Boxs/VideoBoxs/VideoBox'
 import styles from './Channel.module.scss'
 import BlockButton from '~/components/Button/BlockButton'
 import Loading from '~/components/Loading'
-import Button from '~/components/Button'
-import { useGoogleLogin } from '@react-oauth/google'
-import axios from 'axios'
 
 const cn = classNames.bind(styles)
 
@@ -19,10 +14,6 @@ function Channel() {
   const { reload } = useSelector((store) => store.videoReducer)
   const { id } = useParams()
   const [channel, setChannel] = useState({})
-  const [currentUser, setCurrentUser] = useState(
-    JSON.parse(localStorage.getItem('profile')),
-  )
-  const dispatch = useDispatch()
   const [videos, setVideos] = useState([])
   const [isPageLoading, setIsPageLoading] = useState(true)
   const [page, setPage] = useState(1)
@@ -80,30 +71,6 @@ function Channel() {
     getdata()
   }, [id, reload])
 
-  const handleLogin = useGoogleLogin({
-    onSuccess: async (respose) => {
-      try {
-        const res = await axios.get(
-          'https://www.googleapis.com/oauth2/v3/userinfo',
-          {
-            headers: {
-              Authorization: `Bearer ${respose.access_token}`,
-            },
-          },
-        )
-        dispatch(
-          signin({
-            name: res.data.name,
-            email: res.data.email,
-            picture: res.data.picture,
-          }),
-        )
-      } catch (err) {
-        console.log(err)
-      }
-    },
-  })
-
   if (isPageLoading) {
     return <Loading />
   }
@@ -125,18 +92,7 @@ function Channel() {
           </div>
         </div>
         <div className={cn('title-right')}>
-          <BlockButton channel={channel} currentUser={currentUser} />
-
-          {currentUser?.result ? (
-            <SubcribeButton
-              currentUser={currentUser}
-              channel={channel}
-              setCurrentUser={setCurrentUser}
-              setChannel={setChannel}
-            />
-          ) : (
-            <Button children="Đăng ký" small normal onClick={handleLogin} />
-          )}
+          <BlockButton channel={channel} />
         </div>
       </div>
       <div className={cn('separate')}></div>

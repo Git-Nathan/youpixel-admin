@@ -69,7 +69,95 @@ export const getComments = async (req, res, next) => {
 
 export const getReportedComments = async (req, res, next) => {
   try {
-    const reportedComments = await ReportedComment.find()
+    const reportedComments = await ReportedComment.aggregate([
+      { $addFields: { userObjectId: { $toObjectId: '$userId' } } },
+      {
+        $lookup: {
+          from: 'users',
+          localField: 'userObjectId',
+          foreignField: '_id',
+          pipeline: [
+            {
+              $project: {
+                name: 1,
+                picture: 1,
+                numberOfSubcribers: {
+                  $cond: {
+                    if: { $isArray: '$subscribers' },
+                    then: { $size: '$subscribers' },
+                    else: '0',
+                  },
+                },
+              },
+            },
+          ],
+          as: 'userInfo',
+        },
+      },
+      {
+        $unwind: '$userInfo',
+      },
+      {
+        $project: { userObjectId: 0, userId: 0 },
+      },
+      { $addFields: { reportUserObjectId: { $toObjectId: '$reportUserId' } } },
+      {
+        $lookup: {
+          from: 'users',
+          localField: 'reportUserObjectId',
+          foreignField: '_id',
+          pipeline: [
+            {
+              $project: {
+                name: 1,
+                picture: 1,
+                numberOfSubcribers: {
+                  $cond: {
+                    if: { $isArray: '$subscribers' },
+                    then: { $size: '$subscribers' },
+                    else: '0',
+                  },
+                },
+              },
+            },
+          ],
+          as: 'reportUserInfo',
+        },
+      },
+      {
+        $unwind: '$reportUserInfo',
+      },
+      {
+        $project: { reportUserObjectId: 0, reportUserId: 0 },
+      },
+      { $addFields: { videoObjectId: { $toObjectId: '$videoId' } } },
+      {
+        $lookup: {
+          from: 'videos',
+          localField: 'videoObjectId',
+          foreignField: '_id',
+          as: 'videoInfo',
+        },
+      },
+      {
+        $unwind: '$videoInfo',
+      },
+      {
+        $project: { videoObjectId: 0, videoId: 0 },
+      },
+      { $addFields: { commentObjectId: { $toObjectId: '$commentId' } } },
+      {
+        $lookup: {
+          from: 'comments',
+          localField: 'commentObjectId',
+          foreignField: '_id',
+          as: 'commentInfo',
+        },
+      },
+      {
+        $unwind: '$commentInfo',
+      },
+    ])
     res.status(200).json(reportedComments)
   } catch (err) {
     next(err)
