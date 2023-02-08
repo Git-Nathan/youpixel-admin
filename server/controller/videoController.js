@@ -160,76 +160,20 @@ export const getTopView = async (req, res) => {
 }
 
 export const getUserVideos = async (req, res) => {
-  const { id } = req.query
   const { page } = req.query
 
   try {
     const startIndex = (Number(page) - 1) * 20
     const total = await Video.find({
-      userId: id,
-      status: 'approved',
+      status: 'trash',
     }).countDocuments({})
 
-    const videos = await Video.aggregate([
-      { $match: { userId: id, status: 'approved' } },
-      {
-        $project: {
-          __v: 0,
-        },
-      },
-      { $addFields: { userObjectId: { $toObjectId: '$userId' } } },
-      {
-        $lookup: {
-          from: 'users',
-          localField: 'userObjectId',
-          foreignField: '_id',
-          as: 'userInfo',
-        },
-      },
-      {
-        $unwind: '$userInfo',
-      },
-      {
-        $project: {
-          'userInfo.createdAt': 0,
-          'userInfo.email': 0,
-          'userInfo.likedVideos': 0,
-          'userInfo.subscribedUsers': 0,
-          'userInfo.updatedAt': 0,
-          'userInfo.watchedVideos': 0,
-          'userInfo.__v': 0,
-          'userInfo.subscribers': 0,
-        },
-      },
-      { $addFields: { videoStringId: { $toString: '$_id' } } },
-      {
-        $lookup: {
-          from: 'comments',
-          localField: 'videoStringId',
-          foreignField: 'videoId',
-          as: 'comments',
-        },
-      },
-      {
-        $addFields: {
-          numOfComment: {
-            $cond: {
-              if: { $isArray: '$comments' },
-              then: { $size: '$comments' },
-              else: 0,
-            },
-          },
-        },
-      },
-      {
-        $project: {
-          comments: 0,
-        },
-      },
-      { $sort: { createdAt: -1 } },
-      { $skip: startIndex },
-      { $limit: 20 },
-    ])
+    const videos = await Video.find({
+      status: 'trash',
+    })
+      .sort({ createdAt: -1 })
+      .skip(startIndex)
+      .limit(20)
 
     res
       .status(200)
@@ -317,33 +261,26 @@ export const denyVideo = async (req, res) => {
 
 export const deleteVideo = async (req, res, next) => {
   const { videoId } = req.params
-  const userId = req.userId
-  const role = req.role
 
   try {
-    const video = await Video.findById(videoId)
-    if (role === 'admin' || userId === video.userId) {
-      await Video.findByIdAndDelete(videoId)
-      await Comment.deleteMany({
-        videoId: videoId,
-      })
-      await User.updateMany(
-        {},
-        {
-          $pull: {
-            likedVideos: {
-              videoId: videoId,
-            },
-            watchedVideos: {
-              videoId: videoId,
-            },
+    await Video.findByIdAndDelete(videoId)
+    await Comment.deleteMany({
+      videoId: videoId,
+    })
+    await User.updateMany(
+      {},
+      {
+        $pull: {
+          likedVideos: {
+            videoId: videoId,
+          },
+          watchedVideos: {
+            videoId: videoId,
           },
         },
-      )
-      res.status(200).json({ message: 'delete successfully' })
-    } else {
-      return next(createError(403, 'You can only delete your video!'))
-    }
+      },
+    )
+    res.status(200).json({ message: 'delete successfully' })
   } catch (err) {
     next(err)
   }

@@ -48,8 +48,7 @@ export const getVideosBySearch = (searchQuery) =>
   API.get(`/videos/search?${searchQuery}`)
 export const getVideo = (videoId) => API.get(`/videos/${videoId}`)
 export const getTopView = (page) => API.get(`/videos/topview?page=${page}`)
-export const getUserVideos = (userId, page) =>
-  API.get(`/videos/author?id=${userId}&page=${page}`)
+export const getUserVideos = (page) => API.get(`/videos/author?page=${page}`)
 export const getUserVideosPending = (userId, page) =>
   API.get(`/videos/author/pending?id=${userId}&page=${page}`)
 export const getUserVideosToApproval = (page) =>

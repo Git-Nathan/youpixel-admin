@@ -7,6 +7,7 @@ import Channel from '~/pages/Channel'
 import Results from '~/pages/Results'
 import ReportedComment from '~/pages/ReportedComment'
 import SidebarOnly from '~/layouts/SidebarOnly'
+import StudioVideos from '~/pages/StudioVideos'
 
 export const publicRoutes = [
   { path: '/admin', conponemt: Approval },
@@ -16,6 +17,11 @@ export const publicRoutes = [
 ]
 
 export const privateRoutes = [
+  {
+    path: '/admin/trash',
+    conponemt: StudioVideos,
+    layout: StudioLayout,
+  },
   {
     path: '/admin/approval',
     conponemt: Approval,

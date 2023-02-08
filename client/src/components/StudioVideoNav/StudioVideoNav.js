@@ -25,6 +25,13 @@ function StudioVideoNav() {
         >
           <div className={cn('nav-link-btn')}>Bình luận vi phạm</div>
         </NavLink>
+        <NavLink
+          to={'/admin/trash'}
+          className={(nav) => cn('menu-item', { active: nav.isActive })}
+          end
+        >
+          <div className={cn('nav-link-btn')}>Video rác</div>
+        </NavLink>
       </div>
     </div>
   )
