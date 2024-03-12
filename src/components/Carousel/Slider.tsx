@@ -1,14 +1,13 @@
-import { IRenderData } from "./Carousel";
+import { IRenderData, IRenderFunctionData } from "./Carousel";
 
 export type ISliderProps = {
   offset: number;
   isDragging: boolean;
   scale: number;
-  setStartIndex: (x: number) => void;
-  startIndex: number;
   isActive: boolean;
-  renderData: IRenderData;
+  renderData: IRenderData | IRenderFunctionData;
   preventOnClick: boolean;
+  isResizing: boolean;
 };
 
 export function Slider({
@@ -16,27 +15,22 @@ export function Slider({
   offset,
   isDragging,
   scale,
-  setStartIndex,
-  startIndex,
   isActive,
   preventOnClick,
+  isResizing,
 }: ISliderProps): JSX.Element {
   return (
     <div
       className="prevent-select absolute w-full h-full inline-block"
       style={{
         transform: `translateX(${-offset}px) scale(${scale})`,
-        transitionDuration: isDragging ? "0s" : "0.3s",
+        transitionDuration: isDragging || isResizing ? "0s" : "0.3s",
         pointerEvents: preventOnClick ? "none" : "auto",
       }}
-      onMouseDown={() => {
-        setStartIndex(startIndex);
-      }}
-      onTouchStart={() => {
-        setStartIndex(startIndex);
-      }}
     >
-      {renderData.element}
+      {renderData.element instanceof Function
+        ? renderData.element(isActive)
+        : renderData.element}
       {renderData.activeOverlay && (
         <div
           className="absolute top-0 w-full h-full"
