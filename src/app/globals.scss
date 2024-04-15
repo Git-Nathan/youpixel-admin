@@ -12,8 +12,12 @@
   line-height: 1.5;
   font-weight: 400;
 
-  background-color: #f5f5f5;
-  color: #1a1a1a;
+  background-color: #15141b;
+  color: white;
+
+  --background-color: #15141b;
+  --primary-color: #f05123;
+  --text-color-darker: #aaa;
 }
 
 #root {

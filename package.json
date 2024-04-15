@@ -3,12 +3,13 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
+    "dev": "next dev --port 3001",
     "build": "next build",
     "start": "next start",
     "lint": "next lint"
   },
   "dependencies": {
+    "@ant-design/nextjs-registry": "^1.0.0",
     "antd": "^5.16.1",
     "axios": "^1.6.8",
     "clsx": "^2.1.0",
@@ -16,7 +17,7 @@
     "mobx": "^6.12.3",
     "mobx-react-lite": "^4.0.7",
     "moment": "^2.30.1",
-    "next": "14.2.0",
+    "next": "^14.2.1",
     "react": "^18",
     "react-dom": "^18",
     "react-inlinesvg": "^4.1.3",
