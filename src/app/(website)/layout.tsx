@@ -30,7 +30,7 @@ export default function AuthLayout(props: IAuthLayoutProps) {
 
   return (
     <Layout>
-      <AppSider>Sider</AppSider>
+      <AppSider />
       <Layout>
         <Header>Header</Header>
         {props.children}

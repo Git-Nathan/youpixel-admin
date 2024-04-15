@@ -17,7 +17,7 @@ export const metadata: Metadata = {
 export default function RootLayout({children}: {children: React.ReactNode}) {
   return (
     <html lang='en'>
-      <body className={clsx(inter.className, 'bg-[#15141b] text-white')}>
+      <body className={clsx(inter.className, 'bg-background-color text-white')}>
         <AntdRegistry>
           <AntdProvider>{children}</AntdProvider>
         </AntdRegistry>
