@@ -14,6 +14,7 @@ module.exports = {
       'background-color': 'var(--background-color)',
       'primary-color': 'var(--primary-color)',
       'text-color-darker': 'var(--text-color-darker)',
+      'bg-card': 'var(--bg-card)',
     },
   },
   plugins: [],

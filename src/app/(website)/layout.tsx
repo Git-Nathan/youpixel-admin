@@ -1,8 +1,9 @@
 'use client'
 
+import AppHeader from '@/components/Layout/AppHeader'
 import AppSider from '@/components/Layout/AppSider'
 import {Layout} from 'antd'
-import {Footer, Header} from 'antd/es/layout/layout'
+import {Footer} from 'antd/es/layout/layout'
 import {redirect} from 'next/navigation'
 import {ReactNode, useLayoutEffect, useState} from 'react'
 import {SplashScreen} from '../loading'
@@ -32,7 +33,7 @@ export default function AuthLayout(props: IAuthLayoutProps) {
     <Layout>
       <AppSider />
       <Layout>
-        <Header>Header</Header>
+        <AppHeader />
         {props.children}
         <Footer className='text-center'>Youpixel Admin - by Nathan Ngo</Footer>
       </Layout>
