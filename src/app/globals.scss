@@ -1,7 +1,13 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-@import '../styles/components/_nav-link.scss';
+
+@import '../styles/card';
+@import '../styles/layout';
+@import '../styles/menu';
+@import '../styles/table';
+@import '../styles/button';
+@import '../styles/modal';
 
 * {
   margin: 0;
@@ -19,7 +25,9 @@
   --background-color: #15141b;
   --bg-card: #1e232e;
   --primary-color: #f05123;
-  --text-color-darker: #aaa;
+  --color-faded: #aaa;
+  --color-success: #29bd08;
+  --color-danger: #dc4446;
 }
 
 #root {
@@ -33,4 +41,36 @@ body {
   flex-direction: column;
   min-width: 320px;
   min-height: 100vh;
+}
+
+.truncate {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+
+  &-1 {
+    @extend .truncate;
+    -webkit-line-clamp: 1;
+  }
+
+  &-2 {
+    @extend .truncate;
+    -webkit-line-clamp: 2;
+  }
+
+  &-3 {
+    @extend .truncate;
+    -webkit-line-clamp: 3;
+  }
+
+  &-4 {
+    @extend .truncate;
+    -webkit-line-clamp: 4;
+  }
+
+  &-5 {
+    @extend .truncate;
+    -webkit-line-clamp: 5;
+  }
 }

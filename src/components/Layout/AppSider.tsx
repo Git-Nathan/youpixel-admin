@@ -31,7 +31,7 @@ export default function AppSider(props: IAppSiderProps) {
   return (
     <Sider
       width={240}
-      className='border-bg-card border-r border-solid !bg-background-color'
+      className='border-r border-solid border-bg-card !bg-background-color'
     >
       <div className='flex h-full w-full flex-col items-center px-2 py-5'>
         <Image src='/icons/logo.svg' alt='logo' width={150} height={27} />

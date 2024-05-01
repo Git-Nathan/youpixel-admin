@@ -1,4 +1,5 @@
 import AntdProvider from '@/providers/AntdProvider'
+import ReactQueryProvider from '@/providers/ReactQueryProvider'
 import {AntdRegistry} from '@ant-design/nextjs-registry'
 import clsx from 'clsx'
 import type {Metadata} from 'next'
@@ -17,22 +18,26 @@ export const metadata: Metadata = {
 export default function RootLayout({children}: {children: React.ReactNode}) {
   return (
     <html lang='en'>
-      <body className={clsx(inter.className, 'bg-background-color text-white')}>
+      <body className={clsx(inter.className, 'text-white bg-background-color')}>
         <AntdRegistry>
-          <AntdProvider>{children}</AntdProvider>
+          <AntdProvider>
+            <ReactQueryProvider>
+              {children}
+              <ToastContainer
+                position='top-center'
+                autoClose={3000}
+                hideProgressBar
+                newestOnTop={false}
+                closeOnClick
+                rtl={false}
+                pauseOnFocusLoss
+                draggable
+                pauseOnHover
+                theme='dark'
+              />
+            </ReactQueryProvider>
+          </AntdProvider>
         </AntdRegistry>
-        <ToastContainer
-          position='top-center'
-          autoClose={3000}
-          hideProgressBar
-          newestOnTop={false}
-          closeOnClick
-          rtl={false}
-          pauseOnFocusLoss
-          draggable
-          pauseOnHover
-          theme='dark'
-        />
       </body>
     </html>
   )

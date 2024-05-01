@@ -13,8 +13,10 @@ module.exports = {
     colors: {
       'background-color': 'var(--background-color)',
       'primary-color': 'var(--primary-color)',
-      'text-color-darker': 'var(--text-color-darker)',
+      'color-faded': 'var(--color-faded)',
       'bg-card': 'var(--bg-card)',
+      'color-success': 'var(--color-success)',
+      'color-danger': 'var(--color-danger)',
     },
   },
   plugins: [],

@@ -2,7 +2,7 @@
 
 import {api} from '@/api'
 import {IAuth} from '@/interfaces/auth'
-import {handleError} from '@/utils/helper'
+import {handleError} from '@/utils/handleError'
 import {Button, Form, Input, type FormProps} from 'antd'
 import Image from 'next/image'
 import {useRouter} from 'next/navigation'
@@ -17,7 +17,7 @@ export default function AuthPage(props: IAuthPageProps) {
     try {
       const res = await api.auth.login(values)
       toast.success(res?.data?.message)
-      localStorage.setItem('token', res.data?.data?.token as string)
+      localStorage.setItem('token', res?.data?.data?.token as string)
       router.replace('/videos')
     } catch (error: any) {
       handleError(error)

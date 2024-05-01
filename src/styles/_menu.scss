@@ -1,0 +1,13 @@
+.ant-menu {
+  background-color: var(--background-color) !important;
+  border: none !important;
+
+  .ant-menu-item {
+    background-color: #1e232e;
+
+    .ant-menu-title-content {
+      font-weight: 600;
+      margin-left: 12px !important;
+    }
+  }
+}

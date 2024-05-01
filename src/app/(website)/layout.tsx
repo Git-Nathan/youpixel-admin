@@ -34,7 +34,7 @@ export default function AuthLayout(props: IAuthLayoutProps) {
       <AppSider />
       <Layout>
         <AppHeader />
-        {props.children}
+        <div className='px-6 pt-4'>{props.children}</div>
         <Footer className='text-center'>Youpixel Admin - by Nathan Ngo</Footer>
       </Layout>
     </Layout>
