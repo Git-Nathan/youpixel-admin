@@ -3,7 +3,7 @@ export interface IUser {
   name: string
   email: string
   picture: string
-  active: boolean
+  active?: boolean
   createdAt?: string
-  numOfSubscriber: number
+  numOfSubscriber?: number
 }
