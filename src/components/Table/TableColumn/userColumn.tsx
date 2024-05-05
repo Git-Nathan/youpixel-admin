@@ -8,7 +8,8 @@ export const userColumn: ColumnsType<AnyObject> = [
   {
     title: 'ID',
     dataIndex: '_id',
-    width: 300,
+    key: '_id',
+    width: 200,
     render(value) {
       return <p className='truncate-2'>{value}</p>
     },
@@ -35,6 +36,7 @@ export const userColumn: ColumnsType<AnyObject> = [
   {
     title: 'Email',
     dataIndex: 'email',
+    key: 'email',
     width: 300,
     render(value) {
       return <p className='truncate-2'>{value}</p>
@@ -43,6 +45,7 @@ export const userColumn: ColumnsType<AnyObject> = [
   {
     title: 'Name',
     dataIndex: 'name',
+    key: 'name',
     width: 200,
     render(value) {
       return <p className='truncate-2'>{value}</p>
@@ -51,6 +54,7 @@ export const userColumn: ColumnsType<AnyObject> = [
   {
     title: 'Number of subscribers',
     dataIndex: 'numOfSubscriber',
+    key: 'numOfSubscribers',
     width: 180,
     align: 'right',
     render(value) {
@@ -60,6 +64,7 @@ export const userColumn: ColumnsType<AnyObject> = [
   {
     title: 'Active',
     dataIndex: 'active',
+    key: 'active',
     width: 100,
     align: 'center',
     render(value) {
@@ -83,6 +88,8 @@ export const userColumn: ColumnsType<AnyObject> = [
   {
     title: 'Created at',
     dataIndex: 'createdAt',
+    width: 200,
+    key: 'createdAt',
     render(value) {
       return DateTime.fromISO(value).toLocaleString(DateTime.DATETIME_SHORT)
     },

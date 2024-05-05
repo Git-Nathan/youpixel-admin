@@ -1,6 +1,7 @@
 import axios from 'axios'
 import {AuthApi} from './auth'
 import {UserApi} from './user'
+import {VideoApi} from './video'
 
 // export const axiosIntance = axios.create({
 //   baseURL: 'https://youpixel-api.onrender.com/',
@@ -19,5 +20,6 @@ axiosIntance.interceptors.request.use(async (req) => {
 
 const auth = new AuthApi()
 const user = new UserApi()
+const video = new VideoApi()
 
-export const api = {auth, user}
+export const api = {auth, user, video}

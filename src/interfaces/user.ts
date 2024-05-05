@@ -7,3 +7,7 @@ export interface IUser {
   createdAt?: string
   numOfSubscriber?: number
 }
+
+export interface IUpdateUser {
+  name: string
+}

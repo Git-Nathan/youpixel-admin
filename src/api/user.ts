@@ -1,11 +1,14 @@
 import {IResponse} from '@/interfaces/response'
-import {IUser} from '@/interfaces/user'
+import {IUpdateUser, IUser} from '@/interfaces/user'
 import {AxiosResponse} from 'axios'
 import {axiosIntance} from '.'
 
 export class UserApi {
-  getList(page: number): Promise<AxiosResponse<IResponse<IUser[]>>> {
-    return axiosIntance.get(`/users?page=${page}`)
+  getList(
+    page: number,
+    searchQuery: string,
+  ): Promise<AxiosResponse<IResponse<IUser[]>>> {
+    return axiosIntance.get(`/users?page=${page}&search_query=${searchQuery}`)
   }
 
   getById(id: string): Promise<AxiosResponse<IResponse<IUser>>> {
@@ -22,7 +25,7 @@ export class UserApi {
 
   update(
     id: string,
-    data: IUser,
+    data: IUpdateUser,
   ): Promise<AxiosResponse<IResponse<undefined>>> {
     return axiosIntance.patch(`/users/${id}`, data)
   }

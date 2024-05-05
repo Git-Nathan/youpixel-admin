@@ -4,6 +4,7 @@ import {api} from '@/api'
 import AppModal from '@/components/Common/AppModal'
 import AppTable from '@/components/Table/AppTable'
 import {userColumn} from '@/components/Table/TableColumn/userColumn'
+import {useDebounce} from '@/hooks/useDebounce'
 import {handleError} from '@/utils/handleError'
 import {Button, Tooltip} from 'antd'
 import {AnyObject} from 'antd/es/_util/type'
@@ -18,10 +19,11 @@ function UsersPage() {
   const router = useRouter()
 
   const [currentPage, setCurrentPage] = useState(1)
+  const {value: searchQuery, setValue: setSearchQuery} = useDebounce('', 1000)
 
   const {data, isLoading, refetch} = useQuery({
-    queryKey: ['userList', currentPage],
-    queryFn: () => api.user.getList(currentPage),
+    queryKey: ['userList', currentPage, searchQuery],
+    queryFn: () => api.user.getList(currentPage, searchQuery),
     keepPreviousData: true,
   })
 
@@ -61,6 +63,10 @@ function UsersPage() {
     router.push(`/users/${id}`)
   }
 
+  const handleEdit = (id: string) => {
+    router.replace(`/users/${id}/edit`)
+  }
+
   const tableData = useMemo(() => data?.data?.data || [], [data])
 
   const tableColumn: ColumnsType<AnyObject> = [
@@ -69,7 +75,7 @@ function UsersPage() {
       title: 'Actions',
       align: 'right',
       fixed: 'right',
-      width: 150,
+      width: 130,
       render(value, record) {
         return (
           <div
@@ -81,11 +87,28 @@ function UsersPage() {
             <Tooltip title='Detail'>
               <Button
                 type='primary'
-                className='!bg-[#0ea5e9]'
+                className='!bg-[#71717a]'
                 icon={<ReactSVG src='/icons/eye.svg' />}
                 size={'middle'}
                 onClick={() => {
                   handleGoToDetail(record._id)
+                }}
+              />
+            </Tooltip>
+
+            <Tooltip title='Edit'>
+              <Button
+                type='primary'
+                className='!bg-[#0ea5e9]'
+                icon={
+                  <ReactSVG
+                    className='h-[24px] w-[24px]'
+                    src='/icons/edit.svg'
+                  />
+                }
+                size={'middle'}
+                onClick={() => {
+                  handleEdit(record._id)
                 }}
               />
             </Tooltip>
@@ -149,13 +172,18 @@ function UsersPage() {
 
   return (
     <AppTable
+      onSearchQueryChange={(e) => {
+        setSearchQuery(e.target.value)
+      }}
+      searchPlaceholder='Search by email...'
       dataSource={tableData}
+      title='Users'
       columns={tableColumn}
       currentPage={currentPage}
       isLoading={isLoading}
       total={data?.data?.total || 0}
       onPageChange={setCurrentPage}
-      scrollSize={1500}
+      scrollSize={1300}
       onClickToRow={(e, record) => {
         handleGoToDetail(record._id)
       }}

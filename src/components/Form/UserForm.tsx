@@ -1,15 +1,10 @@
 import {api} from '@/api'
-import {IUser} from '@/interfaces/user'
+import {IUpdateUser, IUser} from '@/interfaces/user'
 import {handleError} from '@/utils/handleError'
 import {Button, Card, Form, FormProps, Input, Skeleton} from 'antd'
 import {useParams, useRouter} from 'next/navigation'
-import {useEffect, useState} from 'react'
-
-const userInitialValues = {
-  name: '',
-  email: '',
-  picture: '',
-}
+import {useState} from 'react'
+import {useQuery} from 'react-query'
 
 export interface IUserFormProps {
   isEdit?: boolean
@@ -19,28 +14,28 @@ export default function UserForm(props: IUserFormProps) {
   const router = useRouter()
   const params = useParams<{id: string}>()
 
-  const [initialValues, setInitialValues] = useState<IUser>(userInitialValues)
-  const [isLoading, setisLoading] = useState(true)
+  const [submiting, setSubmiting] = useState(false)
 
-  useEffect(() => {
-    ;(async () => {
-      try {
-        const res = await api.user.getById(params.id)
-        setInitialValues(res?.data?.data as IUser)
-      } catch (error) {
-        handleError(error)
-      } finally {
-        setisLoading(false)
-      }
-    })()
-  }, [])
+  const {data, isLoading} = useQuery({
+    queryKey: ['userDetail', params.id],
+    queryFn: () => api.user.getById(params.id),
+    keepPreviousData: true,
+  })
 
   const handleCancel = () => {
-    router.replace(`/users/${initialValues?._id}`)
+    router.replace(`/users/${data?.data?.data?._id}`)
   }
 
-  const onFinish: FormProps<IUser>['onFinish'] = (values) => {
-    console.log('Success:', values)
+  const onFinish: FormProps<IUpdateUser>['onFinish'] = async (values) => {
+    setSubmiting(true)
+    try {
+      await api.user.update(data?.data?.data?._id || '', values)
+      router.replace(`/users/${data?.data?.data?._id}`)
+    } catch (error) {
+      handleError(error)
+    } finally {
+      setSubmiting(false)
+    }
   }
 
   return (
@@ -48,8 +43,8 @@ export default function UserForm(props: IUserFormProps) {
       <Card
         title={
           props.isEdit ? (
-            initialValues?.email ? (
-              `Edit user: ${initialValues?.email}`
+            data?.data?.data?.email ? (
+              `Edit user: ${data?.data?.data?.email}`
             ) : (
               <Skeleton.Input active size='small' />
             )
@@ -64,7 +59,7 @@ export default function UserForm(props: IUserFormProps) {
         ) : (
           <Form
             name='basic'
-            initialValues={initialValues}
+            initialValues={data?.data?.data}
             layout='vertical'
             onFinish={onFinish}
             autoComplete='off'
@@ -73,17 +68,6 @@ export default function UserForm(props: IUserFormProps) {
               label='Name'
               name='name'
               rules={[{required: true, message: 'Please input your name!'}]}
-            >
-              <Input />
-            </Form.Item>
-
-            <Form.Item<IUser>
-              label='Email'
-              name='email'
-              rules={[
-                {required: true, message: 'Please enter your email!'},
-                {type: 'email', message: 'The input is not valid E-mail!'},
-              ]}
             >
               <Input />
             </Form.Item>
@@ -98,7 +82,11 @@ export default function UserForm(props: IUserFormProps) {
                 Cancel
               </Button>
 
-              <Button type='primary' htmlType='submit'>
+              <Button
+                type='primary'
+                htmlType='submit'
+                loading={isLoading || submiting}
+              >
                 Submit
               </Button>
             </div>
