@@ -19,8 +19,8 @@ export default function DetailImage(props: IDetailImageProps) {
           className='mt-2'
           src={props.src}
           alt={props.src}
-          width={200}
-          height={200}
+          width={400}
+          height={400}
         />
       )}
     </div>

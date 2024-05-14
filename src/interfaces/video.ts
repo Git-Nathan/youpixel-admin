@@ -6,9 +6,11 @@ export interface IVideo {
   duration: number
   imgUrl: string
   imgPath: string
+  videoUrl: string
+  videoPath: string
   views: number
-  createdAt: Date
-  updatedAt: Date
+  createdAt: string
+  updatedAt: string
   userInfo: IUserInfo
 }
 
@@ -17,8 +19,8 @@ export interface IUserInfo {
   name: string
   email: string
   picture: string
-  createdAt: Date
-  updatedAt: Date
+  createdAt: string
+  updatedAt: string
   __v: number
   active: boolean
 }
