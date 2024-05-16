@@ -14,6 +14,15 @@ export class VideoApi {
     )
   }
 
+  getListPending(
+    page: number,
+    searchQuery: string,
+  ): Promise<AxiosResponse<IResponse<IVideo[]>>> {
+    return axiosIntance.get(
+      `/videos/search/pending?page=${page}&search_query=${searchQuery}`,
+    )
+  }
+
   getById(id: string): Promise<AxiosResponse<IResponse<IVideo>>> {
     return axiosIntance.get(`/videos/${id}`)
   }

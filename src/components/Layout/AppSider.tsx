@@ -7,6 +7,11 @@ import {ReactSVG} from 'react-svg'
 
 const navItem: ItemType<MenuItemType>[] = [
   {
+    key: '/pending',
+    label: 'Pending Videos',
+    icon: <ReactSVG src='/icons/video-add.svg' />,
+  },
+  {
     key: '/videos',
     label: 'Videos',
     icon: <ReactSVG src='/icons/library.svg' />,
