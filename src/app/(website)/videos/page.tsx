@@ -25,6 +25,7 @@ function VideosPage() {
     queryKey: ['videoList', currentPage, searchQuery],
     queryFn: () => api.video.getList(currentPage, searchQuery || ''),
     keepPreviousData: true,
+    refetchOnWindowFocus: false,
   })
 
   const handleDelete = async (

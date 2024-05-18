@@ -3,10 +3,10 @@ import {AuthApi} from './auth'
 import {UserApi} from './user'
 import {VideoApi} from './video'
 
-// export const axiosIntance = axios.create({
-//   baseURL: 'https://youpixel-api.onrender.com/',
-// })
-export const axiosIntance = axios.create({baseURL: 'http://localhost:5002'})
+export const axiosIntance = axios.create({
+  baseURL: 'https://youpixel-api.onrender.com/',
+})
+// export const axiosIntance = axios.create({baseURL: 'http://localhost:5002'})
 
 axiosIntance.interceptors.request.use(async (req) => {
   const value = localStorage?.getItem('token')

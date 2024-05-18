@@ -15,15 +15,15 @@ import {useQuery} from 'react-query'
 import {ReactSVG} from 'react-svg'
 import {toast} from 'react-toastify'
 
-function PendingVideosPage() {
+function DenidedVideosPage() {
   const router = useRouter()
 
   const [currentPage, setCurrentPage] = useState(1)
   const {value: searchQuery, setValue: setSearchQuery} = useDebounce('', 1000)
 
   const {data, isFetching, refetch} = useQuery({
-    queryKey: ['pendingVideoList', currentPage, searchQuery],
-    queryFn: () => api.video.getListPending(currentPage, searchQuery || ''),
+    queryKey: ['denidedVideoList', currentPage, searchQuery],
+    queryFn: () => api.video.getListDenided(currentPage, searchQuery || ''),
     keepPreviousData: true,
     refetchOnWindowFocus: false,
   })
@@ -56,22 +56,6 @@ function PendingVideosPage() {
     try {
       await api.video.approve(id)
       toast.success('Approved successfully')
-      closeModal()
-      refetch()
-    } catch (error) {
-      handleError(error)
-      cancelLoading()
-    }
-  }
-
-  const handleDeny = async (
-    id: string,
-    closeModal: () => void,
-    cancelLoading: () => void,
-  ) => {
-    try {
-      await api.video.deny(id)
-      toast.success('Denided successfully')
       closeModal()
       refetch()
     } catch (error) {
@@ -136,31 +120,6 @@ function PendingVideosPage() {
             </AppModal>
 
             <AppModal
-              title='Deny video'
-              handleConfirm={(closeModal, cancelLoading) => {
-                handleDeny(record._id, closeModal, cancelLoading)
-              }}
-              content={`Are you sure you want to deny this video: ${record.title}`}
-            >
-              {(showModal) => (
-                <Tooltip title='Deny'>
-                  <Button
-                    type='primary'
-                    danger
-                    icon={
-                      <ReactSVG
-                        className='h-[24px] w-[24px]'
-                        src='/icons/slash.svg'
-                      />
-                    }
-                    size={'middle'}
-                    onClick={showModal}
-                  />
-                </Tooltip>
-              )}
-            </AppModal>
-
-            <AppModal
               title='Confirm Delete'
               handleConfirm={(closeModal, cancelLoading) => {
                 handleDelete(record._id, closeModal, cancelLoading)
@@ -197,7 +156,7 @@ function PendingVideosPage() {
       }}
       searchPlaceholder='Search by title...'
       dataSource={tableData}
-      title='Pending Videos'
+      title='Denided Videos'
       columns={tableColumn}
       currentPage={currentPage}
       isLoading={isFetching}
@@ -211,4 +170,4 @@ function PendingVideosPage() {
   )
 }
 
-export default PendingVideosPage
+export default DenidedVideosPage

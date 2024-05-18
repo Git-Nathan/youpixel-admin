@@ -21,6 +21,11 @@ const navItem: ItemType<MenuItemType>[] = [
     label: 'Users',
     icon: <ReactSVG src='/icons/user-octagon.svg' />,
   },
+  {
+    key: '/denided',
+    label: 'Denided Videos',
+    icon: <ReactSVG src='/icons/slash.svg' />,
+  },
 ]
 
 export interface IAppSiderProps {}

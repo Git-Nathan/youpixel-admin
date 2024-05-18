@@ -20,6 +20,7 @@ export default function UserForm(props: IUserFormProps) {
     queryKey: ['userDetail', params.id],
     queryFn: () => api.user.getById(params.id),
     keepPreviousData: true,
+    refetchOnWindowFocus: false,
   })
 
   const handleCancel = () => {

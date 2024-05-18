@@ -21,6 +21,7 @@ export default function UserDetail() {
     queryKey: ['userDetail', params.id],
     queryFn: () => api.user.getById(params.id),
     keepPreviousData: true,
+    refetchOnWindowFocus: false,
   })
 
   const handleDelete = async (

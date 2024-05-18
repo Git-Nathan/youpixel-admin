@@ -21,6 +21,7 @@ export default function UserDetail() {
     queryKey: ['videoDetail', params.id],
     queryFn: () => api.video.getById(params.id),
     keepPreviousData: true,
+    refetchOnWindowFocus: false,
   })
 
   const handleDelete = async (

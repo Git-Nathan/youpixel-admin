@@ -23,6 +23,23 @@ export class VideoApi {
     )
   }
 
+  getListDenided(
+    page: number,
+    searchQuery: string,
+  ): Promise<AxiosResponse<IResponse<IVideo[]>>> {
+    return axiosIntance.get(
+      `/videos/search/denided?page=${page}&search_query=${searchQuery}`,
+    )
+  }
+
+  approve(id: string) {
+    return axiosIntance.patch(`/videos/approve/${id}`)
+  }
+
+  deny(id: string) {
+    return axiosIntance.patch(`/videos/deny/${id}`)
+  }
+
   getById(id: string): Promise<AxiosResponse<IResponse<IVideo>>> {
     return axiosIntance.get(`/videos/${id}`)
   }

@@ -25,6 +25,7 @@ function UsersPage() {
     queryKey: ['userList', currentPage, searchQuery],
     queryFn: () => api.user.getList(currentPage, searchQuery),
     keepPreviousData: true,
+    refetchOnWindowFocus: false,
   })
 
   const handleDelete = async (
