@@ -124,6 +124,10 @@ export default function UserDetail() {
               {data?.data?.data?.title}
             </DetailText>
 
+            <DetailText className='mt-3' title='Transcript'>
+              {data?.data?.data?.transcript}
+            </DetailText>
+
             <Detail className='mt-3' title='Channel'>
               <div className='flex items-center'>
                 <Image

@@ -12,6 +12,7 @@ export interface IVideo {
   createdAt: string
   updatedAt: string
   userInfo: IUserInfo
+  transcript?: string
 }
 
 export interface IUserInfo {
